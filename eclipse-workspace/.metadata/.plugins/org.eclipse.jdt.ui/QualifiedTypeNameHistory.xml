@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="java.util.Collection"/>
+    <fullyQualifiedTypeName name="java.awt.Color"/>
+    <fullyQualifiedTypeName name="observer.Observer"/>
+    <fullyQualifiedTypeName name="sweep.GUIStateSweep"/>
+    <fullyQualifiedTypeName name="sweep.SimStateSweep"/>
+    <fullyQualifiedTypeName name="java.io.BufferedWriter"/>
+    <fullyQualifiedTypeName name="java.io.FileWriter"/>
+    <fullyQualifiedTypeName name="java.io.IOException"/>
+    <fullyQualifiedTypeName name="java.util.Collections"/>
+    <fullyQualifiedTypeName name="sim.field.grid.SparseGrid2D"/>
+    <fullyQualifiedTypeName name="sim.portrayal.grid.SparseGridPortrayal2D"/>
+    <fullyQualifiedTypeName name="sim.engine.Stoppable"/>
+    <fullyQualifiedTypeName name="sim.field.grid.Grid2D"/>
+    <fullyQualifiedTypeName name="sim.engine.Steppable"/>
+    <fullyQualifiedTypeName name="sim.engine.SimState"/>
+    <fullyQualifiedTypeName name="sim.util.Bag"/>
+    <fullyQualifiedTypeName name="java.io.BufferedReader"/>
+    <fullyQualifiedTypeName name="java.io.FileReader"/>
+    <fullyQualifiedTypeName name="java.io.FileNotFoundException"/>
+    <fullyQualifiedTypeName name="com.sun.tools.javac.util.ArrayUtils"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="java.lang.reflect.Field"/>
+    <fullyQualifiedTypeName name="java.util.ArrayList"/>
+    <fullyQualifiedTypeName name="java.util.Arrays"/>
+    <fullyQualifiedTypeName name="java.lang.System"/>
+</qualifiedTypeNameHistroy>

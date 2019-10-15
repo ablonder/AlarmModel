@@ -1,0 +1,8 @@
+% Base Parameters: Dims = 100, predfreq = .004, huntsteps = 4, hetfreq = .01, accalarm = 1, falarm = 0, preddet = 1, alarmdet = 1, condet = 1, apredrange = 2, aalarmrange = 4, aconrange = 2, hetrange = 4, predrange = 2, align = true, popthresh = 1000, vigilance = true, vigprop = .333, indvprop = .333, mutrate = .001, fthresh = 25, localbirth = false, learnalg = b, lrate = .01, 
+
+% Test Parameters:
+%vigilance = [true, false]
+% Parameters	Results
+vigilance	VigAlarm	IndAlarm	SocAlarm	VigNoAlarm	IndNoAlarm	SocNoAlarm	vigcount	indcount	soccount	
+true	0.0	0.3235294117647059	0.4229098805646037	1.0	1.0	1.0	62.0	17.0	921.0	
+false	NaN	0.4057971014492754	0.42749731471535984	NaN	1.0	1.0	0.0	69.0	931.0	

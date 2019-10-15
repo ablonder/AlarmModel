@@ -1,0 +1,6 @@
+% Base Parameters: Dims = 100, predfreq = .01, huntsteps = 1, hetfreq = .1, accalarm = 1, falarm = 0, preddet = 1, alarmdet = 1, condet = 1, apredrange = 2, aalarmrange = 4, aconrange = 2, hetrange = 4, predrange = 2, align = true, popthresh = 1000, basevig = .001, vigilance = true, vigprop = .34, indvprop = .33, mutrate = .001, fthresh = 25, stayforage = 1, foragediff = .1, predflee = 0, localbirth = false, minlifespan = 125, lifespanrange = 50, learnalg = n, lrate = .01, 
+
+% Test Parameters:
+% 	Results
+Seed	VigAlarm	IndAlarm	SocAlarm	VigNoAlarm	IndNoAlarm	SocNoAlarm	VigPredCost	IndPredCost	SocPredCost	VigForageCost	IndForageCost	SocForageCost	VigOffspring	IndOffspring	SocOffspring	VigLifespan	IndLifespan	SocLifespan	PredRate	ReprodRate	FAlarmRate	vigcount	indcount	soccount	
+0	0.21532246786444703	0.4895541678984541	0.5062294172320143	0.7846775321355535	0.7819057391074996	0.46707412531573844	0.0519608780145911	0.048923922626147386	0.043057737627651214	3.628659721558508	3.6875641756988022	6.357325216025138	0.9870973908056963	1.001475072320242	0.9789116649461731	121.76332473159387	122.25689192358813	121.93501450130266	0.4000670016750419	8.16036850921273	25.659061976549413	0.0	975.0	25.0	

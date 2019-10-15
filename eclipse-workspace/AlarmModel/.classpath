@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path=""/>
+	<classpathentry combineaccessrules="false" kind="src" path="/MASONplus"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/MASON"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/MASON/mason.19.jar"/>
+	<classpathentry kind="lib" path="/MASON/libraries/bsh-2.0b4.jar"/>
+	<classpathentry kind="lib" path="/MASON/libraries/itext-1.2.jar"/>
+	<classpathentry kind="lib" path="/MASON/libraries/jcommon-1.0.21.jar"/>
+	<classpathentry kind="lib" path="/MASON/libraries/jfreechart-1.0.17.jar"/>
+	<classpathentry kind="lib" path="/MASON/libraries/jmf.jar"/>
+	<classpathentry kind="lib" path="/MASON/libraries/portfolio.jar"/>
+	<classpathentry kind="output" path=""/>
+</classpath>

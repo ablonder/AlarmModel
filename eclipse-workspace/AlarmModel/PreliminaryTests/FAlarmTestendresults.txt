@@ -1,0 +1,16 @@
+Base Parameters: PredFreq = .001, AccAlarm = 1, FAlarm = 0, PredDet = 1, AlarmDet = 1, ConDet = 1, PopThresh = 1000, VigProp = .334, IndProp = .333, MutRate = .001, FThresh = 100, PredForage = .01, PredFlee = 0, LearnAlg = n, 
+
+Test Parameters:
+FAlarm = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1]
+FAlarm
+0	5.0	466.0	529.0	
+.1	370.0	335.0	295.0	
+.2	379.0	304.0	317.0	
+.3	310.0	322.0	368.0	
+.4	298.0	241.0	461.0	
+.5	169.0	477.0	354.0	
+.6	478.0	234.0	288.0	
+.7	221.0	363.0	416.0	
+.8	492.0	235.0	273.0	
+.9	369.0	294.0	337.0	
+1	359.0	322.0	319.0	

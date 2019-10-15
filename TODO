@@ -1,0 +1,7 @@
+- just individual and social learning to start (vigialnce may be having a weird effect on social learners in nn and rw)
+- check the literature (for math models too)
+- start by running it to match the mathematical model
+- sweep a range of detection ranges
+- change the number of agents (see if they learn faster and how it scales)
+- try a range of predator numbers and limit the frequency with which predators can consume prey/move
+- possibly modify getMooreNeighbors so agents only have to do one check

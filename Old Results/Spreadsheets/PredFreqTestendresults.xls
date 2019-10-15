@@ -1,0 +1,16 @@
+Base Parameters: PredFreq = 0, AccAlarm = 1, FAlarm = 0, PredDet = 1, AlarmDet = 1, ConDet = 1, PopThresh = 1000, VigProp = .334, IndProp = .333, MutRate = .001, FThresh = 100, PredForage = .01, PredFlee = 0, LearnAlg = n, 			
+			
+Test Parameters:			
+PredFreq = [0, .0005, .0006, .0007, .0008, .0009, .001, .002, .003, .004, .005]			
+PredFreq	vigilance only	individual learning	social learning
+0	334	333	333
+0.0005	60	478	462
+0.0006	43	478	479
+0.0007	23	517	460
+0.0008	19	460	521
+0.0009	9	490	501
+0.001	5	466	529
+0.002	0	476	524
+0.003	0	483	517
+0.004	0	470	530
+0.005	0	505	495

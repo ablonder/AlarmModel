@@ -1,0 +1,8 @@
+Base Parameters: PredFreq = .001, AccAlarm = 1, FAlarm = 0, PredDet = 1, AlarmDet = 1, ConDet = 1, PopThresh = 1000, VigProp = .334, IndProp = .333, MutRate = .001, FThresh = 100, PredForage = .01, PredFlee = 0, LearnAlg = n, Steps = .01, 
+
+Test Parameters:
+LearnAlg = [n, b, r]
+LearnAlg
+n	0.9989183021085897	0.9997965673632374	0.9996729883588699	
+b	NaN	1.0	1.0	
+r	0.9999999675456193	0.9999999999999731	0.9999999999999876	

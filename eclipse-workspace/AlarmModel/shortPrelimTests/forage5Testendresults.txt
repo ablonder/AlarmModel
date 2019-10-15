@@ -1,0 +1,9 @@
+% Base Parameters: Dims = 100, predfreq = .004, huntsteps = 4, hetfreq = .01, accalarm = 1, falarm = 0, preddet = 1, alarmdet = 1, condet = 1, apredrange = 2, aalarmrange = 4, aconrange = 2, hetrange = 4, predrange = 2, align = true, popthresh = 1000, basevig = .001, vigilance = true, vigprop = .334, indvprop = .333, mutrate = .001, fthresh = 25, fleeforage = .5, stayforage = 1, localbirth = true, learnalg = r, lrate = .01, 
+
+% Test Parameters:
+%learnalg = [r, n, b]
+% Parameters	Results
+learnalg	VigAlarm	IndAlarm	SocAlarm	VigNoAlarm	IndNoAlarm	SocNoAlarm	PredRate	ReprodRate	FAlarmRate	vigcount	indcount	soccount	
+r	0.01842840795931144	0.48399661546725276	0.46889631688596	0.9815715920097299	0.9812643270770801	0.9199614746195179	0.1312929292929293	0.1312929292929293	0.42667676767676765	533.0	459.0	8.0	
+n	0.0032220360070904746	0.48115332349312606	0.49999999999999023	0.9967779639929625	0.9971586311176939	0.99429807747003	0.11484848484848485	0.11484848484848485	0.3784141414141414	510.0	486.0	4.0	
+b	0.0	0.3	0.6349693251533742	1.0	1.0	1.0	0.046707070707070704	0.046707070707070704	0.3562929292929293	17.0	5.0	978.0	

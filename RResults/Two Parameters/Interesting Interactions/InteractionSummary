@@ -1,0 +1,8 @@
+-forage diff & stay forage
+-local birth (hunt steps, pred freq)
+-pred flee & hunt steps
+-pred freq (hunt steps, pred flee, stay forage)
+
+three way interactions:
+-pred flee, hunt steps, pred freq
+-local birth, hunt steps, pred freq

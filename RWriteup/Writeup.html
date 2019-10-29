@@ -534,14 +534,14 @@ END DETECT
     ELSE IF the provided y distance is negative:
       Decrement this Animal's y coordinate by 1
     
-    IF this Animal's x coordinate &lt; 0:
-      SET this Animal's x coordinate = 1
-    ELSE IF this Animal's x coordinate &gt; 100:
-      SET this Animal's x coordinate = 99
-    IF this Animal's y coordinate &lt; 0:
-      SET this Animal's y coordinate = 1
-    ELSE IF this Animal's y coordinate &gt; 100:
-      SET this Animal's y coordinate = 99
+  IF this Animal's x coordinate &lt; 0:
+    SET this Animal's x coordinate = 1
+  ELSE IF this Animal's x coordinate &gt; 100:
+    SET this Animal's x coordinate = 99
+  IF this Animal's y coordinate &lt; 0:
+    SET this Animal's y coordinate = 1
+  ELSE IF this Animal's y coordinate &gt; 100:
+    SET this Animal's y coordinate = 99
 END MOVE
 </code></pre>
 <p><strong>Fleeing:</strong> Agents calculate the probability of fleeing based on whether they detected an alarm calling heterospecific, using the learning algorithm set for that simulation (see <em>Neural Network</em> and <em>Rescorla-Wagner</em> below). The agent then decides whether to flee by drawing from a uniform distribution from 0 to 1. If the chosen calue is less than the calculated probability of fleeing, it decides to flee, and otherwise it decides not to flee. If an agent decides to flee, it attempts to evade predators by moving. If it detects a predator, it moves in the opposite direction away from the nearest predator. Otherwise, if it detects an alarm call, it moves away from the nearest alarm calling heterospecific. If it neither detects a predator nor an alarm calling heterospecific, it moves in the same direction as the nearest fleeing conspecific. Otherwise, if it detects none of these, the agent moves randomly.</p>
@@ -551,20 +551,23 @@ END MOVE
   ELSE:
     DETECT alarm calling (signalling) Heterospecifics
   
-  CALCULATE probability of fleeing using the learning algorithm, based on the whether an alarm was detected
+  CALCULATE probability of fleeing using the learning algorithm
   IF a draw from a uniform distribution from 0 to 1 &lt; probability of fleeing:
     INITIALIZE x and y distance = 0
     IF this Agent DETECTs a Predator:
-      SET x distance = [see Animal.Detect]
+      SET x distance = this Agent's x coordinate - the Predator's x coordinate
+      SET y distance = this Agent's y coordinate - the Predator's y coordinate
     ELSE IF this Agent is not vigilance only AND DETECTs an alarm-calling Heterospecific:
-      SET x distance =
+      SET x distance = this Agent's x coordinate - the Heterospecific's x coordinate
+      SET y distance = this Agent's y coordinate - the Heteropsecific's y coordinate
     ELSE IF this Agent is a social learner AND DETECTs a fleeing Agent:
       SET x and y distance = that Agent's direction of movement
     MOVE according to distance
 END FLEE</code></pre>
 <p><em>Neural network:</em> In simulations using the neural network learning algorithm, agents make decisions and learn using a simple two layer neural network. The input layer contains only one simulate neuron, representing the agent’s sensory apparatus, and the output layer contains two neurons, representing the agent’s decision. The activation of the first output neuron represents a decision not to flee and the activation of the second output neuron represents the decision to flee. The detection of an alarm is represented as an input of 1 to the network, and the absence of an alarm is represented as an input of -1. The activation of the output neurons is then calculated based on the input, the learned weights from the input neuron to the output neurons, and the learned biases of the output neurons. <span class="math display">\[output_{i=0,1} = input*weight_i + bias_i\]</span> The agent’s action is determined based on the relative activations of the output neurons, such that the probability of fleeing is: <span class="math display">\[P(flee) = \frac{e^{output_1}}{e^{output_0} + e^{output_1}}.\]</span></p>
+<p>[INSERT FIGURE]</p>
 <pre><code>FUNCTION CALCULATE_NERUAL_NETWORK:
-  IF an alarm-calling Heterospecific was detected:
+  IF this Agent DETECTs an alarm-calling Heterospecific:
     SET input = 1
   ELSE
     SET input = -1
@@ -575,22 +578,102 @@ END FLEE</code></pre>
   
   RETURN probability of fleeing
 END FUNCTION DECIDE_NEURAL_NETWORK</code></pre>
-<p><em>Rescorla-Wagner:</em> In simulations using the Rescorla-Wagner learning algorithm, Agents decide whether to flee based on the learned association between an alarm or the absence of an alarm and fleeing, depending on whether or not the Agent detected an alarm The strength of the association is used as the probability of not fleeing, so that the probability of fleeing is: <span class="math display">\[P(flee) = 1-association.strength.\]</span></p>
+<p><em>Rescorla-Wagner:</em> In simulations using the Rescorla-Wagner learning algorithm, Agents decide whether to flee based on the learned association between an alarm or the absence of an alarm and fleeing, depending on whether or not the Agent detected an alarm. The strength of the association is used as the probability of fleeing.</p>
 <pre><code>FUNCTION CALCULATE_RESCORLA_WAGNER:
-  IF an alarm-calling Heterospecific was detected:
-    SET probability of fleeing = 1 - association strength of an alarm
+  IF this Agent DETECTs an alarm-calling Heterospecific:
+    SET probability of fleeing = association strength of an alarm
   ELSE
-    SET probability of fleeing = 1 - association strength of the absence of an alarm
+    SET probability of fleeing = association strength of the absence of an alarm
     
   RETURN probability of fleeing
 END CALCULATE_RESCORLA_WAGNER</code></pre>
-<p><strong>Foraging:</strong> Each step, all agents have the opportunity to forage. The probability of foraging successfully is based on whether the agent decided to flee. If the agent is fleeing it has one probability of foraging successfully, and if it is foraging, it has an equal or greater probability of foraging successfully. These success rates are set for each trial. If an agent forages successfully, it accumulates one unit of resource.</p>
-<p><strong>Reproduction:</strong> When an agent has accumulated a set amount of resources, it attempts to reproduce. If the population is below the carrying capacity, it succeeds, creating an agent with the same genotype (learning strategy) in a random or adjacent location on the grid (depending on whether there is local reproduction), with a set probability of mutating to another genotype.</p>
-<p><strong>Learning:</strong> Each step, all agents learn based on the current state of their surroundings. Vigilance only agents just detect predators and increase their probability of feeling if a predator is present, or otherwise decrease their probability of fleeing in accordance with the learning algorithm. Individual and social learning agents detect whether an alarm-calling heterospecific is present. If an agent detects an alarm call, it adjusts its likelihood of fleeing in the presence of an alarm, and if an agent does not detect an alarm call, it adjust its likelihood of fleeing in the absence of an alarm. Individual learning agents detect predators and increase their probability of fleeing if a predator is present and otherwise decrease their probability of fleeing, while social learning agents detect both predators and other fleeing agents, and increase their probability of fleeing if either is present, and otherwise decrease their probability of fleeing. <em>Neural network:</em> <em>Rescorla-Wagner:</em></p>
-<p>[insert figure]</p>
+<p><strong>Foraging:</strong> Each step, all agents have the opportunity to forage. The probability of foraging successfully is based on whether the agent decided to flee. If the agent is fleeing it has one probability of foraging successfully, and if it is foraging, it has an equal or greater probability of foraging successfully. These success rates are set for each simulation If an agent forages successfully, it accumulates one unit of resource.</p>
+<pre><code>FUNCTION FORAGE:
+  IF this Agent is fleeing:
+    SET probability of foraging successfully = probability of foraging successfully while not fleeing - decrease in foraging success while fleeing
+  ELSE:
+    SET probability of foraging successfully = probability of foraging successfully while not fleeing
+  
+  IF a draw from a uniform distribution from 0 to 1 &lt; probability of foraging successfully:
+    Increment the amount of resources accumulated by this Agent
+END FORAGE</code></pre>
+<p><strong>Reproduction:</strong> When an agent has accumulated a set amount of resources, it attempts to reproduce. If the population is below the carrying capacity, it succeeds, creating an agent with the same genotype (learning strategy) in a random location on the grid, with a set probability of mutating to another genotype.</p>
+<pre><code>FUNCTION REPRODUCE:
+  IF the amount of resources accumulated by this Agent &gt; threshold for reproduction:
+    SET amount of resources accumulated by this Agent = 0
+    IF total number of Agents in the population &lt; maximum population size:
+      IF a draw from a uniform distribution from 0 to 1 &lt; mutation rate:
+        CREATE a new Agent of a different learning strategy from its parent (randomly chosen)
+      ELSE:
+        CREATE a new Agent of the same learning strategy as its parent
+END REPRODUCE</code></pre>
+<p><strong>Learning:</strong> Each step, all agents learn based on the current state of their surroundings. Vigilance only agents just detect predators and increase their probability of feeling if a predator is present, or otherwise decrease their probability of fleeing in accordance with the learning algorithm. Individual and social learning agents detect whether an alarm-calling heterospecific is present. If an agent detects an alarm call, it adjusts its likelihood of fleeing in the presence of an alarm, and if an agent does not detect an alarm call, it adjust its likelihood of fleeing in the absence of an alarm. Individual learning agents detect predators and increase their probability of fleeing if a predator is present and otherwise decrease their probability of fleeing, while social learning agents detect both predators and other fleeing agents, and increase their probability of fleeing if either is present, and otherwise decrease their probability of fleeing.</p>
+<pre><code>FUNCTION LEARN:
+  IF this Agent is vigilance only:
+    Assume no alarm is present
+  ELSE:
+    DETECT alarm calling (signalling) Heterospecifics
+  
+  IF this Agent DETECTs Predators OR this is a social learning Agent and DETECTs fleeing Agents:
+    REINFORCE fleeing using the learning algorithm for this simulation
+  ELSE:
+    REINFORCE not fleeing using the learning algorithm for this simulation
+END LEARN</code></pre>
+<p><em>Neural network:</em> In simulations using the neural network learning algorithm, Agents learn by adjusting the weights and biases of the neural network. Reinforcement is converted into an array that represents the ideal behavior under the provided circumstances. If the Agent is reinforced to flee, the ideal behavior is represented as <span class="math inline">\((0, 1)\)</span>, which would result in a nearly one hundred percent change of fleeing, and if it is reinforced not to flee, the ideal behavior is represented as <span class="math inline">\((1, 0)\)</span>, which would result in a nearly zero percent chance of fleeing. The ideal response is then compared with the actual output of the network under the circumstances, to calculate the error.</p>
+<p><span class="math display">\[error_i = ideal_i - output_i\]</span> The error is used to adjust the weights and biases to each output node in accordance with the backpropagation equation.</p>
+<p><span class="math display">\[\Delta weight_i = learning.rate * error_i * input\]</span> <span class="math display">\[\Delta bias_i = learning.rate * error_i\]</span></p>
+<pre><code>FUNCTION REINFORCE_NEURAL_NETWORK:
+  IF this Agent DETECTs an alarm-calling Heterospecific:
+    SET input = 1
+  ELSE:
+    SET input = -1
+  
+  IF this Agent is reinforced to flee:
+    SET ideal response = [0, 1]
+  ELSE:
+    SET ideal response = [1, 0]
+  
+  FOR i = 0,1:
+    SET error i = ideal response i - output i
+    SET weight i = weight i + learning rate * error i * input
+    SET bias i = bias i + learning rate * error
+  END FOR
+END REINFORCE_NEURAL_NETWORK</code></pre>
+<p><em>Rescorla-Wagner:</em> In simulations using the Rescorla-Wagner learning algorithm, Agents learn by adjusting the strength of the association between the presence or absence of an alarm and not fleeing. If the agent is reinforced to flee, the association strength is increased, with a maximum of 1. <span class="math display">\[\Delta association.strength = learning.rate*(1-association.strength)\]</span> If the agent is reinforced not to flee, the association strength is decreased, with a minimum of 0. <span class="math display">\[\Delta association.strength = -learning.rate*association.strength\]</span></p>
+<pre><code>FUNCTION REINFORCE_RESCORLA_WAGNER:
+  IF this Agent DETECTs an alarm-calling Heterospecific:
+    SET association strength = strength of association between the presence of an alarm and fleeing
+  ELSE:
+    SET association strength = strength of association between the absence of an alarm and fleeing
+  
+  IF this Agent is reinforced to flee:
+    SET association strength = MIN(assocation strength + learning rate * (1-association strength), 1)
+  ELSE:
+    SET association strength = MAX(association strength - learning rate * assocation strength, 0)
+END REINFORCE_RESCORLA_WAGNER</code></pre>
 <p><strong>Density check:</strong> Each step, all predators and heterospecifics check to ensure that the ratio of their type (predators or heterospecifics) to agents is within one individual of the initial ratio. If there are too few individuals, a new individual is initialized at a random location, and if there are too many this individual is removed from the population.</p>
+<pre><code>FUNCTION CHECK_DENSITY:
+  SET ideal number of individuals of this type =  initial frequency of this type * number of Agents
+  IF number of individuals of this type &gt; 1 AND number of individuals - 1 &gt; ideal number of individuals:
+    REMOVE this Animal from the population
+  ELSE IF the number of individuals of this type/number of Agents &lt; initial frequency of this type:
+    CREATE a new Animal of this type
+END CHECK_DENSITY</code></pre>
 <p><strong>Predation:</strong> When a predator has gone a designated number of steps without successfully catching an agent, it will detect agents and if successful, it will move toward the nearest agent, and otherwise moves randomly. If a predator lands on the same space as an agent, it attempts to catch the agent. If it succeeds, the agent is removed from the population and the predator’s step counter is reset. Each predator can only catch one agent on each step.</p>
+<pre><code>FUNCTION PREDATION:
+  IF the number of steps this Predator has gone since hunting &gt; set number of steps between attempts:
+    DETECT Agents
+    MOVE toward nearest Agent (or randomly, if none)
+    IF this Predator is at the same x and y coordinates as an Agent:
+      IF the Agent is not fleeing OR a draw from a uniform distribution from 0 to 1 &lt; set probability of predation on fleeing Agents:
+        REMOVE the Agent
+        SET number of steps this Predator has gone since hunting = 0
+END PREDATION</code></pre>
 <p><strong>Alarm calling:</strong> Each step, all heterospecifics attempt to detect predators. If successful, they signal that they are alarm calling.</p>
+<pre><code>FUNCTION ALARM_CALL:
+  IF this Heterospecific DETECTs a Predator:
+    SET Alarm-calling (signalling) = True
+END ALARM_CALL</code></pre>
 </div>
 </div>
 </div>

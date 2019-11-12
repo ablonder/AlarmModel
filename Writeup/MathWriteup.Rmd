@@ -1,0 +1,93 @@
+---
+title: "Alarm Model Mathematical Analysis"
+author: "Aviva Blonder"
+date: "October 30, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\usepackage{amsmath}
+
+## Learning
+
+The learning dynamics can be evaluated analytically and numerically using a mathematical model. Following [citation needed], this model assumes that learning happens at a much faster rate than evolution, so the equilibirium behaviors from learning can be calculated and then used to determine the resulting payoffs to the different learning strategies.
+
+Individual learners just learn whether to respond to an alarm and the absence of an alarm based on whether they detect a predator.
+$$ P(resp|alarm,I) = P(alarm|predator)P(predator)P(detect) $$
+$$ P(resp|noAlarm,I) = (1-P(alarm|predator))P(predator)P(detect) $$
+
+Social learners learn whether to respond to an alarm and the absence of an alarm based on whether they detect a predator or, if they don't detect a predator, the response of a conspecific (either a social learner or individual learner).
+\begin{align*}
+    P(response|alarm,S,t+1) = & P(alarm|predator)P(predator)P(detect) \\
+    & + (1-P(predator))P(alarm|noPredator)P(I)P(response|alarm,I) \\
+    & + P(predator)(1-P(detect))P(alarm|predator)P(I)P(response|alarm,I) \\
+    & + (1-P(predator))P(alarm|noPredator)P(S)P(response|alarm,S,t) \\
+    & + P(predator)(1-P(detect))P(alarm|predator)P(S)P(response|alarm,S,t)
+\end{align*}
+
+\begin{align*}
+    P(response|noAlarm,S,t+1) = &  (1-P(alarm|predator))P(predator)P(detect) \\
+    & + (1-P(predator))(1-P(alarm|noPredator))P(I)P(response|noAlarm,I) \\
+    & + P(predator)(1-P(detect))(1-P(alarm|predator))P(I)P(response|noAlarm,I) \\
+    & + (1-P(predator))(1-P(alarm|noPredator))P(S)P(response|noAlarm,S,t) \\
+    & + P(predator)(1-P(detect))(1-P(alarm|predator))P(S)P(response|noAlarm,S,t)
+\end{align*}
+
+For simplicity all further analyses assume that alarms never occur in the absence of a predator, or $P(alarm|noPredator) = 0$, so $P(alarm) = P(alarm|predator)$.
+
+Simpler notation will be used for writing out equations:
+\begin{align*}
+    p & = probability \ of \ a \ predator \ being \ present \\
+    a & = probability \ of \ alarm \\
+    d & = probability \ of \ detecting \ a \ predator \ if \ present \\
+    s & = proportion \ of \ social \ learners \\
+    L_{a/n,l} & = learned \ response \ to \ an \ alarm/no \ alarm \ for \ learning \ type \ l \\
+\end{align*}
+
+The learning equations can then be rewritten in terms of this notation:
+\begin{align*}
+    L_{ai} & = apd \\
+    L_{ni} & = (1-a)pd \\
+    L_{as}' & = apd + p(1-d)a ((1-s)L_{ai}+sL_{as}) \\
+    & = apd + p(1-d)a ((1-s)apd+sL_{as}) \\
+    L_{ns}' & = (1-a)pd + ((1-p) + p(1-d)(1-a))((1-s)L_{ni} + sL_{ns}) \\
+    & = (1-a)pd + ((1-p) + p(1-d)(1-a))((1-s)(1-a)pd + sL_{ns})
+\end{align*}
+
+The equilibrium responsiveness of social learners to the presence of an alarm is:
+$$ L_{as} = apd\frac{1 + p(1-d)(1-s)a}{1-p(1-d)as}.$$
+
+As predation, detection, alarm frequency, and the proportion of social learners increase, the amount of learned responsiveness to alarms also increases. Note that $pda$ is the probability of learning to respond to an alarm on their own, $p(1-d)(1-s)a$ is the probability of having an opportunity to learn from an individual learner, and $p(1-d)as$ is the probability of having an opportunity to learn from another social learner, all of which positively impact the probability of a social learner learning to respond to an alarm.
+
+The equilibrium responsiveness of social learners to the absence of an alarm is:
+$$L_{ns} = (1-a)pd\frac{1 + ((1-p) + p(1-d)(1-a))(1-s)}{1 - ((1-p) + p(1-d)(1-a))s}$$
+This is analogous to learning in the presence of an alarm. Increases in predation, detection, and the proportion of social learners increase the amount of learned responsiveness to the absence of an alarm. Increasing the frequency of alarms decreases the learned responsiveness to the absence of an alarm. Responsiveness also increases as the probability of individually learning to respond to the absence of an alarm, $(1-a)pd$, the probability of learning from an individual learner, $((1-p) + p(1-d)(1-a))(1-s)$, and the probability of learning from a social learner, $((1-p) + p(1-d)(1-a))s$, increase.
+
+Because $a$, $p$, $d$, and $s$ are probabilities (i.e. values between 0 and 1), social learners must always be more responsive than individual learners, regardless of the conditions.
+
+## Evolution
+
+Individuals' learned responses to the presence and absence of an alarm determine their payoffs in the presence and absence of a predator. If an individual responds, whether in the presence or absence of an alarm, it is assumed to recieve no benefit from foraging, but incurs no cost of predation. If an individual does not respond, it gains the benefit of foraging, $b$, but if a predator is present, it also incurs some cost of predation, $c$.
+
+These payoffs determine the fitness of each learning strategy, $V(L)$, based on whether or not a predator is present and whether or not the individual detects an alarm. Since, if the individual responds, the payoff is always 0, the fitness is calculated based on the probability of not responding to an alarm or the absence of an alarm.
+\begin{align*}
+    V(L) = & P(alarm|predator)P(predator)(1-P(resp|alarm,L))(benefit-cost) \\
+    & + P(alarm|noPredator)(1-P(predator))(1-P(resp|alarm,L))*benefit \\
+    & + (1-P(alarm|predator))P(predator)(1-P(resp|noAlarm,L)(benefit-cost) \\
+    & + (1-P(alarm|noPredator)(1-P(predator))(1-P(resp|noAlarm,L))*benefit
+\end{align*}
+
+This equation can then be used to determine the fitness of each strategy:
+
+\begin{align*}
+    V(S) = & ap(1-pda\frac{1 + p(1-d)(1-s)a}{1-p(1-d)as})(b-c) \\ & + (p(1-a)(b-c)+(1-p)b)(1-(1-a)pd\frac{1 + ((1-p) + p(1-d)(1-a))(1-s)}{1 - ((1-p) + p(1-d)(1-a))s}) \\
+    \\
+    V(I) = & ap(1-apd)(b-c) + (p(1-a)(b-c) + (1-p)b)(1-(1-a)pd).
+\end{align*}
+
+This equation is not analytically tractable, but can be used to draw some general conclusions. Social learning is only an ESS when the cost of not responding when there is a predator outweighs the benefit of continuing to forage. Furthermore, social learning is always an ESS if additionally, $$b < c \frac{p(1-a)}{1-pa}.$$
+
+This can only be true if it is already the case that $c > b$. The higher the probability of there being a predator and no alarm, and the higher the probability of there being both an alarm and a predator, the easier it is for social learners to invade when the costs are already higher than the benefits. This is intuitive because social learners are more responsive under both circumstances, and so are more likely to evade the costs of predation than individual learners, though they lose the oportunity to forage.

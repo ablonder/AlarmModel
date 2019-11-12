@@ -75,3 +75,22 @@ for(p1 in testparams){
 
 # three parameters
 plotResults(d4, c("LocalBirth", "predfreq", "huntsteps"), "localbirth predfreq huntsteps", list(c("SocProp")), c("Proportion of Social Learners"), catlabels = "huntsteps", savelv = 3)
+
+# histogram of proportion of social learners
+ggplot(d4, aes(x = SocProp)) +
+  geom_histogram(bins = 50, position = "identity", alpha = .5)
+
+# I'm going to look at those populations that are almost all social learners
+d5 = d4[d4$SocProp > .9, ]
+summary(d5)
+
+# I wonder what happens if I look at the trajectories
+setwd("../ResultsCSVs/WithPredFlee")
+timed = combineFiles(list.files(), c("vig", "lb", "la"), c("Testtimeresults.txt"),
+                 c("Vigilance","LocalBirth","LearnAlg"))
+timed$condition = paste(timed$Seed, timed$predfreq, timed$huntsteps, timed$stayforage, timed$foragediff,
+                        timed$predflee, timed$LearnAlg, timed$LocalBirth, timed$Vigilance)
+timed1 = timed[timed$LearnAlg != 'b', ]
+timed1$SocProp = timed1$soccount/(timed1$soccount + timed1$indcount + timed1$vigcount)
+# I need to do something about this so it doesn't break the computer
+ggplot(data = timed1, aes(x = Timestep, y = SocProp)) + geom_line()

@@ -293,7 +293,7 @@ public class AlarmModel extends Model {
 	
 	
 	public static void main(String[] args) {
-		AlarmModel model = new AlarmModel("testInput.txt");
+		AlarmModel model = new AlarmModel("learntestInput.txt");
 		// AlarmModel model = new AlarmModel(args[0]);
 	}
 }

@@ -90,7 +90,7 @@ public class AlarmModelUI extends GUIState {
 	
 	public static void main(String[] args) {
 		// this needs to create an alarm model, make sure gui is set to true or it'll just run normally
-		AlarmModel model = new AlarmModel("testInput.txt");
+		AlarmModel model = new AlarmModel("GUItestInput.txt");
 		AlarmModelUI vid = new AlarmModelUI(model);
 		Console c = new Console(vid);
 		c.setVisible(true);

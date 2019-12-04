@@ -2,7 +2,7 @@ library(ggplot2)
 library(tidyr)
 
 setwd("Documents/Research/IMCapstone/ResultsCSVs/WithPredFlee/endresults")
-setwd("../ResultsCSVs/WithPredFlee/EndResults")
+setwd("../ResultsCSVs/WithPredFlee/endresults")
 d = combineFiles(list.files(), c("vig", "lb", "la"), c("Testendresults.txt"),
                  c("Vigilance","LocalBirth","LearnAlg"))
 setwd("../../../RResults")
@@ -52,29 +52,63 @@ d3$NoAlarmDiff = d3$IndNoAlarm - d3$SocNoAlarm
 ggplot(d3, aes(x = NoAlarmDiff, fill = LearnAlg, color = LearnAlg)) +
   geom_histogram(binwidth = .01, alpha = .5, position = "identity")
 
+
+# data without naive-bayes comparing all three genotypes
+d5 = d2[d2$LearnAlg != 'b' & d2$Vigilance == "true",]
+# I'm going to add log hunsteps, which will be more meaningful
+d5$loghuntsteps = log(d5$huntsteps)
+# start by looking at each parameter
+testparams = c("LocalBirth", "loghuntsteps", "predflee", "stayforage", "foragediff", "predfreq", "LearnAlg")
+for(p in testparams){
+  plotResults(d5, c(p, "type"), p, list(c("count"), c("alarm"), c("noalarm"), c("predcost"), c("foragecost"),
+                                        c("offspring"), c("lifespan")),
+              c("Surviving Individuals", "Response to Alarm", "Response to No Alarm", "Cost of Predation",
+                "Cost to Foraging", "Reproductive Success", "Lifespan"), c("Genotype"))
+}
+
+# a quick inspection of the cases where vigilance doesn't dominate
+#d6 = d[d$LearnAlg != 'b' & d$Vigilance == "true" & d$vigcount < d$indcount+d$soccount, ]
+d6 = d[d$LearnAlg != 'b' & d$Vigilance == "true", ]
+# I'm going to add log hunsteps, which will be more meaningful
+d6$loghuntsteps = log(d6$huntsteps)
+#summary(d6)
+d7 = gather(d6, type, count, c("vigcount", "indcount", "soccount"))
+d7$type[d7$type == "vigcount"] = "vigilance"
+d7$type[d7$type == "indcount"] = "individual"
+d7$type[d7$type == "soccount"] = "social"
+
 # data without naive-bayes for publication
-d4 = d[d$LearnAlg != 'b',]
+d4 = d[d$LearnAlg != 'b' & d$Vigilance == "true",]
 d4$SocProp = d4$soccount/(d4$soccount + d4$vigcount + d4$indcount)
+d4$VigProp = d4$vigcount/(d4$soccount + d4$vigcount + d4$indcount)
+# log huntsteps will be more informative when it's used on the x-axis
+d4$loghuntsteps = log(d4$huntsteps)
 
 # one parameter
-testparams = c("Vigilance", "LocalBirth", "huntsteps", "predflee", "stayforage", "foragediff", "predfreq", "LearnAlg")
+testparams = c("Vigilance", "LocalBirth", "loghuntsteps", "predflee", "stayforage", "foragediff", "predfreq", "LearnAlg")
 for(p in testparams){
   d4[,p] = as.factor(d4[,p])
   plot = ggplot(d4, aes(x = d4[, p], y = SocProp)) + geom_boxplot() + xlab(p)
   ggsave(paste(p, ".png"))
 }
 
+# all parameters split by pred freq
+testparams = c("LocalBirth", "loghuntsteps", "predflee", "stayforage", "foragediff", "LearnAlg")
+for(p in testparams){
+  plotResults(d7, c("predfreq", p, "type"), paste("predfreq", p), list(c("count")), c("Surviving"), catlabels = "Genotype", savelv = 3)
+}
+
 # two parameters
 for(p1 in testparams){
   for(p2 in testparams){
     if(p1 != p2){
-      plotResults(d4, c(p1, p2), paste(p1, p2), list(c("SocProp")), c("Proportion of Social Learners"), catlabels = p2)
+      plotResults(d4, c(p1, p2), paste(p1, p2), list(c("VigProp")), c("Proportion of Vigilance Only"), catlabels = p2)
     }
   }
 }
 
 # three parameters
-plotResults(d4, c("LocalBirth", "predfreq", "huntsteps"), "localbirth predfreq huntsteps", list(c("SocProp")), c("Proportion of Social Learners"), catlabels = "huntsteps", savelv = 3)
+plotResults(d4, c("huntsteps", "predfreq", "stayforage", "foragediff"), "huntsteps predfreq stayforage foragediff", list(c("VigProp")), c("Proportion of Vigilance Only"), catlabels = "forage diff", savelv = 4)
 
 # histogram of proportion of social learners
 ggplot(d4, aes(x = SocProp)) +

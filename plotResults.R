@@ -16,7 +16,7 @@ library(gridExtra)
 # testlabels - vector of labels for the y-axis of each graph, should be the same length as testvars
 # catlabels - vector of labels for the colors of each graph, should be the same length as testvars
 plotResults = function(dtable, params, fname, testvars, testlabels, catlabels, scatter = F, 
-                       linelabels = c(), shapelabels = c(), savelv = 2){
+                       linelabels = c(), shapelabels = c(), savelv = 2, pointsize = F){
   if(length(params) == savelv){
     # loop through each set of measures to crete the corresponding plots
     for(v in 1:length(testvars)) {
@@ -97,7 +97,7 @@ plotResults = function(dtable, params, fname, testvars, testlabels, catlabels, s
         # otherwise, if the x-axis is numeric, turn this into a linegraph
         plot = ggplot(plotd, aes(x = x, y = mean, colour = c)) +
           geom_errorbar(aes(ymin=mean-se, ymax=mean+se), width=.1) + geom_line(aes(linetype = l)) +
-          geom_point(aes(shape = s)) + ylab(testlabels[v]) + xlab(params[length(params)-1]) +
+          geom_point(aes(shape = s, size = N/sum(N))) + ylab(testlabels[v]) + xlab(params[length(params)-1]) +
           labs(colour = params[length(params)]) +
           guides(colour=guide_legend(title=clab), shape=guide_legend(title=slab), linetype=guide_legend(title = llab))
       } else {

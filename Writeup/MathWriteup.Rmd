@@ -1,25 +1,26 @@
+
 ---
 title: "Alarm Model Mathematical Analysis"
 author: "Aviva Blonder"
+header-includes:
+  - \usepackage{amsmath}
 date: "October 30, 2019"
-output: html_document
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-\usepackage{amsmath}
-
 ## Learning
 
-The learning dynamics can be evaluated analytically and numerically using a mathematical model. Following [citation needed], this model assumes that learning happens at a much faster rate than evolution, so the equilibirium behaviors from learning can be calculated and then used to determine the resulting payoffs to the different learning strategies.
+The dynamics of social and individual learning can be evaluated analytically and numerically using a mathematical model. Following Rogers (1988), this model assumes that learning happens at a much faster rate than evolution, so the equilibrium outcomes of learning can be calculated to determine how individuals with different strategies will behave. These behaviors can then used to determine the resulting payoffs to the different learning strategies.
 
-Individual learners just learn whether to respond to an alarm and the absence of an alarm based on whether they detect a predator.
+Individual learners just learn whether to respond to an alarm and in the absence of an alarm based on whether they detect a predator under each of those conditions.
 $$ P(resp|alarm,I) = P(alarm|predator)P(predator)P(detect) $$
 $$ P(resp|noAlarm,I) = (1-P(alarm|predator))P(predator)P(detect) $$
 
-Social learners learn whether to respond to an alarm and the absence of an alarm based on whether they detect a predator or, if they don't detect a predator, the response of a conspecific (either a social learner or individual learner).
+Social learners learn whether to respond to an alarm and in the absence of an alarm based on whether they detect a predator or, if they don't detect a predator, the response of a conspecific (either a social learner or individual learner).
 \begin{align*}
     P(response|alarm,S,t+1) = & P(alarm|predator)P(predator)P(detect) \\
     & + (1-P(predator))P(alarm|noPredator)P(I)P(response|alarm,I) \\

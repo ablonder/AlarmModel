@@ -17,7 +17,9 @@ In this paper, I use mathematical and agent-based models to predict what conditi
 The dynamics of social and individual learning can be evaluated analytically and numerically using a mathematical model. Following Rogers (1988), this model assumes that learning happens at a much faster rate than evolution, so the equilibrium outcomes of learning can be calculated to determine how individuals with different strategies will behave. These behaviors can then used to determine the resulting payoffs to the different learning strategies.
 
 Individual learners just learn whether to respond to an alarm and in the absence of an alarm based on whether they detect a predator under each of those conditions.
+
 $$ P(resp|alarm,I) = P(alarm|predator)P(predator)P(detect) $$
+
 $$ P(resp|noAlarm,I) = (1-P(alarm|predator))P(predator)P(detect) $$
 
 Social learners learn whether to respond to an alarm and in the absence of an alarm based on whether they detect a predator or, if they don't detect a predator, the response of a conspecific (either a social learner or individual learner).
@@ -36,12 +38,15 @@ The learning equations can then be rewritten in terms of this notation:
 ![](Writeup/Figures/SimpleEqns.png)
 
 Recursively solving for $\bar{L}_{as}$ (see appendix), we find that the equilibrium responsiveness of social learners to the presence of an alarm is:
+
 $$ \bar{L}_{as} = apd\frac{1 + p(1-d)(1-s)a}{1-p(1-d)as}.$$
 
 As predation, detection, alarm frequency, and the proportion of social learners increase, the amount of learned responsiveness to alarms also increases. Note that $pda$ is the probability of learning to respond to an alarm on their own, $p(1-d)(1-s)a$ is the probability of having an opportunity to learn from an individual learner, and $p(1-d)as$ is the probability of having an opportunity to learn from another social learner, all of which positively impact the probability of a social learner learning to respond to an alarm.
 
 Recursively solving for $\bar{L}_{ns}$ (see appendix), we find that the equilibrium responsiveness of social learners to the absence of an alarm is:
+
 $$L_{ns} = (1-a)pd\frac{1 + ((1-p) + p(1-d)(1-a))(1-s)}{1 - ((1-p) + p(1-d)(1-a))s}$$
+
 This is analogous to the previous equation for the learned response to an alarm at equilibrium. Increases in predation, detection, and the proportion of social learners increase the amount of learned responsiveness to the absence of an alarm. Increasing the frequency of alarms decreases the learned responsiveness to the absence of an alarm. Responsiveness also increases as the probability of individually learning to respond to the absence of an alarm, $(1-a)pd$, the probability of learning from an individual learner, $((1-p) + p(1-d)(1-a))(1-s)$, and the probability of learning from a social learner, $((1-p) + p(1-d)(1-a))s$, increase.
 
 Because $a$, $p$, $d$, and $s$ are probabilities (i.e. values between 0 and 1), social learners must always be more responsive than individual learners, regardless of the conditions (see appendix).
@@ -58,7 +63,9 @@ This equation can then be used to determine the fitness of each strategy:
 
 ![](Writeup/Figures/StrategyFitness.png)
 
-This is not analytically tractable, but can be used to draw some general conclusions. Social learning is only an evolutionarily stable strategy when the cost of not responding when there is a predator outweighs the benefit of continuing to forage, or $c > b$. Furthermore, social learning is always an evolutionarily stable strategy if additionally, $$\frac{b}{c} < \frac{p(1-a)}{1-pa}.$$
+This is not analytically tractable, but can be used to draw some general conclusions. Social learning is only an evolutionarily stable strategy when the cost of not responding when there is a predator outweighs the benefit of continuing to forage, or $c > b$. Furthermore, social learning is always an evolutionarily stable strategy if additionally,
+
+$$\frac{b}{c} < \frac{p(1-a)}{1-pa}.$$
 
 Note that this can only be true if it is already the case that $c > b$. The higher the probability that there is a predator, but no alarm, and the higher the probability of there being both an alarm and a predator, the easier it is for social learners to invade when the costs are already higher than the benefits. Social learners are more responsive under both circumstances, and so are more likely to evade the costs of predation than individual learners, though they lose opportunities to forage.
 

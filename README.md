@@ -1,4 +1,4 @@
-## Agent-Based Model of Learning about Conspecific Alarm Calls (ODD)
+## Agent-Based Model of Learning to Recognize Alarm Calls (ODD)
 
 ### Overview
 

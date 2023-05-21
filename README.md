@@ -1,14 +1,3 @@
----
-title: "Alarm Model"
-author: "Aviva Blonder"
-output: word_document
----
-
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 ## Introduction
 
 For an organism to have offspring, it must not only acquire enough resources to reproduce, but also survive long enough to accumulate and use those resources. For many species, predation is a major risk to survival. However, this presents a trade-off because it is often difficult, if not impossible, to simultaneously avoid predators and forage for resources. As a result, predators not only reduce their prey’s fitness through consumptive effects - by killing and eating their prey - but also through non-consumptive effects - the costly defences prey animals use to avoid predation. Costly defenses from predation include physiological defense such as shells and camouflage, as well as changes in behavior, such as altering habitat use, time budgeting, and tolerating the presence of conspecifics (Lima 1998).
@@ -33,18 +22,18 @@ $$ P(resp|noAlarm,I) = (1-P(alarm|predator))P(predator)P(detect) $$
 
 Social learners learn whether to respond to an alarm and in the absence of an alarm based on whether they detect a predator or, if they don't detect a predator, the response of a conspecific (either a social learner or individual learner).
 
-![](Figures/AlarmResp.png)
+![](Writeup/Figures/AlarmResp.png)
 
-![](Figures/NoAlarmResp.png)
+![](Writeup/Figures/NoAlarmResp.png)
 
 For simplicity all further analyses assume that alarms never occur in the absence of a predator, or $P(alarm|noPredator) = 0$, so $P(alarm) = P(alarm|predator)$.
 
 Simpler notation will be used for writing out equations:
 
-![](Figures/SimpleNotation.png)
+![](Writeup/Figures/SimpleNotation.png)
 
 The learning equations can then be rewritten in terms of this notation:
-![](Figures/SimpleEqns.png)
+![](Writeup/Figures/SimpleEqns.png)
 
 Recursively solving for $\bar{L}_{as}$ (see appendix), we find that the equilibrium responsiveness of social learners to the presence of an alarm is:
 $$ \bar{L}_{as} = apd\frac{1 + p(1-d)(1-s)a}{1-p(1-d)as}.$$
@@ -60,14 +49,14 @@ Because $a$, $p$, $d$, and $s$ are probabilities (i.e. values between 0 and 1), 
 ### Evolution
 
 Individuals' learned responses to the presence and absence of an alarm determine their payoffs in the presence and absence of a predator (see payoff matrix). If an individual responds, whether in the presence or absence of an alarm, it is assumed to recieve no benefit from foraging, but incurs no cost of predation. If an individual does not respond, it gains the benefit of foraging, $b$, but if a predator is present, it also incurs some cost of predation, $c$.
-![](Figures/Payoffs.png)
+![](Writeup/Figures/Payoffs.png)
 
 These payoffs determine the fitness, $V(L)$, of each learning strategy, $L$, based on whether or not a predator is present and whether or not the individual detects an alarm. Since, if the individual responds, the payoff is always 0, the fitness is calculated based on the probability of not responding to an alarm or in the absence of an alarm.
-![](Figures/FitnessEqn.png)
+![](Writeup/Figures/FitnessEqn.png)
 
 This equation can then be used to determine the fitness of each strategy:
 
-![](Figures/StrategyFitness.png)
+![](Writeup/Figures/StrategyFitness.png)
 
 This is not analytically tractable, but can be used to draw some general conclusions. Social learning is only an evolutionarily stable strategy when the cost of not responding when there is a predator outweighs the benefit of continuing to forage, or $c > b$. Furthermore, social learning is always an evolutionarily stable strategy if additionally, $$\frac{b}{c} < \frac{p(1-a)}{1-pa}.$$
 
@@ -97,7 +86,7 @@ To evaluate the effect of learning rate on learned responsiveness to alarms and 
 
 To determine the relative fitness of the different learning strategies under a range of conditions, the full model was run with a population of 1000 agents on a 100-by-100 square grid, using a learning rate of .01. The model was tested under all possible combinations of parameter values (listed in table below) to evaluate the effect of predator frequency, number of steps between predation attempts, baseline probability of successfully foraging, decrease in foraging success while attending to predators, probability of being caught by a predator while attentive, local reproduction, the learning algorithm used, and the presence of vigilance only agents.
 
-![](Figures/Exp2Params.png)
+![](Writeup/Figures/Exp2Params.png)
 
 ## Results and Discussion
 

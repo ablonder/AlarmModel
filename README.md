@@ -1,106 +1,388 @@
-## Introduction
+## Agent-Based Model (ODD)
 
-For an organism to have offspring, it must not only acquire enough resources to reproduce, but also survive long enough to accumulate and use those resources. For many species, predation is a major risk to survival. However, this presents a trade-off because it is often difficult, if not impossible, to simultaneously avoid predators and forage for resources. As a result, predators not only reduce their prey’s fitness through consumptive effects - by killing and eating their prey - but also through non-consumptive effects - the costly defences prey animals use to avoid predation. Costly defenses from predation include physiological defense such as shells and camouflage, as well as changes in behavior, such as altering habitat use, time budgeting, and tolerating the presence of conspecifics (Lima 1998).
+### Overview
 
-Natural selection should favor strategies that minimize both consumptive and non-consumptive costs of predation to maximize fitness in a given environment. Models have shown how animals can optimize their movement in space (e.g. Bracis et al. 2018) and their behavior over time. Standard models of signal detection theory suggest that animals should avoid foraging when predators are prevalent and only forage when it appears to be safe. However, more recent state-dependent models make the opposite prediction; that prey animals should be more likely to flee when predators are rare than when they are common (Trimmer et al. 2017). Similarly, the risk allocation hypothesis suggests that animals should handle the trade-off between foraging and predation by only foraging when predators are absent if predators are rare, incurring low consumptive costs and higher, but acceptable non-consumptive costs. But that if predators are common, their prey should forage whether predators are present or not, incurring higher consumptive costs, but low non-consumptive costs (Lima & Bednekoff 1999).
+#### Purpose
 
-The decision of when to be vigilant and when to forage can be determined innately, but it can also be learned from experience. However, learning about predators is not an easy feat. Predators are necessarily uncommon relative to their prey, cues are not necessarily reliable, and each encounter with a predator may be an individual’s last. Despite the high cost of not attending to an accurate cue, animals cannot respond to every potential cue of a predator or else they would spend all of their time being vigilant and never forage. However, that makes it harder to learn to attend to valuable cues from necessarily limited learning opportunities. One way of increasing the amount of learning opportunities is through social learning. For many species, it is more likely that a conspecific will be present than a predator, so they can learn whether a cue is informative more efficiently based on how conspecifics respond to the cue instead of just relying on the presence of a predator.
-
-Models have shown how animals can use the behavior of others to determine when to be vigilant (Jackson & Ruxton 2006). However, much of the work on social learning has been done from a cultural transmission perspective (e.g. Boyd & Richerson 1985), though it has been applied to more ecological contexts (for review see Kendall et al. 2004). In the broadest sense, social learning is expected to only evolve when there are enough individuals in the population that can learn on their own, to generate new information for social learners to acquire, resulting in an equilibrium population that is a mix of social and individual learners (Rogers 1988). Models of changing environments suggest that social learning should evolve when the environment changes too rapidly for the optimal behavior to have time to become innate, but slowly enough for information received from other individuals to still be accurate (Boyd & Richerson 1985). Dewar (2003) proposed a simple model of whether social learning about predators should be favored based on the costs of responding to and ignoring a predator if it is present or absent.
-
-In this paper, I use mathematical and agent-based models to predict what conditions should favor the evolution of social learning to recognize a particular cue indicating the presence of a predator; heterospecific alarm calls. Animals of many species use alarm calls to detect predators. Alarm calls are usually thought to be intended to scare away the predator or warn conspecifics. However, they can also be heard by members of other species that happen to be present. Heterospecific alarm calls can contain valuable information, possibly at a reduced cost relative to conspecific alarm calls. Though some species have an innate capacity to recognize other species’ alarm calls, they can also be learned from experience (Magrath et al. 2014). For example, gray squirrels (Sciurus carolinensis) have been found to respond more strongly to the familiar alarm call of the American robin (Turdus migratorius) than to unfamiliar, but acoustically similar alarm calls made by the common blackbird (Turdus merula; Getschow et al. 2013). However, it is unknown whether individual learning is sufficient to recognize alarm calls, or if instead animals such as grey squirrels rely on the responses of others to determine which alarm calls to attend to and which to ignore. My model evaluates whether selection should favor social learning in the context of learning to recognize heterospecific alarm calls.
-
-## Mathematical Model
-
-### Learning
-
-The dynamics of social and individual learning can be evaluated analytically and numerically using a mathematical model. Following Rogers (1988), this model assumes that learning happens at a much faster rate than evolution, so the equilibrium outcomes of learning can be calculated to determine how individuals with different strategies will behave. These behaviors can then used to determine the resulting payoffs to the different learning strategies.
-
-Individual learners just learn whether to respond to an alarm and in the absence of an alarm based on whether they detect a predator under each of those conditions.
-
-$$ P(resp|alarm,I) = P(alarm|predator)P(predator)P(detect) $$
-
-$$ P(resp|noAlarm,I) = (1-P(alarm|predator))P(predator)P(detect) $$
-
-Social learners learn whether to respond to an alarm and in the absence of an alarm based on whether they detect a predator or, if they don't detect a predator, the response of a conspecific (either a social learner or individual learner).
-
-![](Writeup/Figures/AlarmResp.png)
-
-![](Writeup/Figures/NoAlarmResp.png)
-
-For simplicity all further analyses assume that alarms never occur in the absence of a predator, or $P(alarm|noPredator) = 0$, so $P(alarm) = P(alarm|predator)$.
-
-Simpler notation will be used for writing out equations:
-
-![](Writeup/Figures/SimpleNotation.png)
-
-The learning equations can then be rewritten in terms of this notation:
-![](Writeup/Figures/SimpleEqns.png)
-
-Recursively solving for $\bar{L}_{as}$ (see appendix), we find that the equilibrium responsiveness of social learners to the presence of an alarm is:
-
-$$ \bar{L}_{as} = apd\frac{1 + p(1-d)(1-s)a}{1-p(1-d)as}.$$
-
-As predation, detection, alarm frequency, and the proportion of social learners increase, the amount of learned responsiveness to alarms also increases. Note that $pda$ is the probability of learning to respond to an alarm on their own, $p(1-d)(1-s)a$ is the probability of having an opportunity to learn from an individual learner, and $p(1-d)as$ is the probability of having an opportunity to learn from another social learner, all of which positively impact the probability of a social learner learning to respond to an alarm.
-
-Recursively solving for $\bar{L}_{ns}$ (see appendix), we find that the equilibrium responsiveness of social learners to the absence of an alarm is:
-
-$$L_{ns} = (1-a)pd\frac{1 + ((1-p) + p(1-d)(1-a))(1-s)}{1 - ((1-p) + p(1-d)(1-a))s}$$
-
-This is analogous to the previous equation for the learned response to an alarm at equilibrium. Increases in predation, detection, and the proportion of social learners increase the amount of learned responsiveness to the absence of an alarm. Increasing the frequency of alarms decreases the learned responsiveness to the absence of an alarm. Responsiveness also increases as the probability of individually learning to respond to the absence of an alarm, $(1-a)pd$, the probability of learning from an individual learner, $((1-p) + p(1-d)(1-a))(1-s)$, and the probability of learning from a social learner, $((1-p) + p(1-d)(1-a))s$, increase.
-
-Because $a$, $p$, $d$, and $s$ are probabilities (i.e. values between 0 and 1), social learners must always be more responsive than individual learners, regardless of the conditions (see appendix).
-
-### Evolution
-
-Individuals' learned responses to the presence and absence of an alarm determine their payoffs in the presence and absence of a predator (see payoff matrix). If an individual responds, whether in the presence or absence of an alarm, it is assumed to recieve no benefit from foraging, but incurs no cost of predation. If an individual does not respond, it gains the benefit of foraging, $b$, but if a predator is present, it also incurs some cost of predation, $c$.
-![](Writeup/Figures/Payoffs.png)
-
-These payoffs determine the fitness, $V(L)$, of each learning strategy, $L$, based on whether or not a predator is present and whether or not the individual detects an alarm. Since, if the individual responds, the payoff is always 0, the fitness is calculated based on the probability of not responding to an alarm or in the absence of an alarm.
-![](Writeup/Figures/FitnessEqn.png)
-
-This equation can then be used to determine the fitness of each strategy:
-
-![](Writeup/Figures/StrategyFitness.png)
-
-This is not analytically tractable, but can be used to draw some general conclusions. Social learning is only an evolutionarily stable strategy when the cost of not responding when there is a predator outweighs the benefit of continuing to forage, or $c > b$. Furthermore, social learning is always an evolutionarily stable strategy if additionally,
-
-$$\frac{b}{c} < \frac{p(1-a)}{1-pa}.$$
-
-Note that this can only be true if it is already the case that $c > b$. The higher the probability that there is a predator, but no alarm, and the higher the probability of there being both an alarm and a predator, the easier it is for social learners to invade when the costs are already higher than the benefits. Social learners are more responsive under both circumstances, and so are more likely to evade the costs of predation than individual learners, though they lose opportunities to forage.
+This model aims to investigate under what ecological conditions social learning should be favored by natural selection over individual learning in the context of heterospecific alarm call recognition. Based on mathematical analyses (discussed above), social learning should always result in increased responsiveness to alarms, decreasing the consumptive costs of predation, but increasing the non-consumptive costs of missed foraging opportunities. This model directly compares the very different costs imposed by predation and missed foraging opportunities.
 
 
-## Agent-Based Model
+#### State Variables and Scales
 
-The mathematical model above abstractly represents the costs of predation and missed foraging opportunities as variables, $c$ and $-b$. However, in actuality, these costs are very different. Being caught by a predator may mean the end of an animal’s life - preventing it from having any more reproductive opportunities - while a missed foraging opportunity means that the animal has just a little less energy to go toward reproduction, which can accumulate over time. A more biologically realistic simulation model can be used to compare these very different costs, as well as to take a more in depth look into the dynamics of social learning in the context of learning to attend to heterospecific alarm calls.
-
-The agent-based model consists of a population of learning agents, as well as predators and alarm-calling heterospecifics, whose population sizes are determined in proportion to the number of agents alive at a given time. Agents, predators, and heterospecifics are distributed on a 2-dimensional grid. Each agent lives for a set number of discrete time steps, at the end of which the agent dies and is removed from the simulation. Each time step, all living agents have the opportunity to forage with some set probability of success to accumulate resources for reproduction. Even when an agent has accumulated enough resources to reproduce, it can only be successful when the total number of agents is below a set carrying capacity. In simulations with local reproduction, new agents are placed at the same coordinates as their parents, whereas in simulations without local reproduction, new agents are placed randomly on the grid.
-
-Over the course of an agent’s lifespan, it also learns whether to respond to alarm calls, made by heterospecifics, in order to avoid being eaten by predators. If an agent responds to an alarm or in the absence of an alarm, its foraging success drops by a set amount, but it can move to avoid a predator and can, with some probability, escape a predator even if the predator enters the same square as the agent. If a predator successfully catches an agent, that agent dies and is removed from the simulation. For half of the simulations, all agents learned using a simple neural network, and in half of the simulations, all agents learned according to the Rescorla-Wagner (1972) model.
-
-There are three learning strategies in the simulation; individual learning, social learning, and vigilance only. Which strategy an agent uses is determined by its genotype. Vigilance only agents ignore all alarm calls and just learn how frequently to respond based on how often predators are present. Individual learning agents learn whether to respond in the presence and absence of an alarm based on how often predators are present under each condition. Social learning agents learn whether to respond in the presence and absence of an alarm based on how often predators are present and how often they see other agents responding under each condition. Initially, there are equal proportions of all genotypes in the population. When an agent reproduces, it passes on its learning strategy to its offspring with a .001 probability of mutation.
-
-The full ODD description of the model is in the attached appendix.
+The model is composed of a community of animals: agents, predators, and alarm-calling heterospecifics, that are placed in a two dimensional habitat. Agents are characterized by their learning strategy (vigilance only, individual, or social), lifespan, age, location, amount of resources accumulated since last reproduction, whether they are fleeing or not, the direction in which they are fleeing, and learning parameters (depending on the learning algorithm being used in that simulation). Predators are characterized by the number of steps since they last caught an agent and their location. Heterospecifics are characterized by whether they are alarm-calling or not and their location.
+The habitat has a carrying capacity that limits the number of agents, predators, and heterospecifics that can be alive at any given time.
+(See *Initialization* for a complete list of parameters and state variables.)
 
 
-## Simulation Experiments
+#### Process Overview and Scheduling
 
-###Experiment 1
+Time is modeled in discrete steps. On each step, all agents, predators, and heterospecifics execute their behaviors and update their state variables.
 
-To evaluate the effect of learning rate on learned responsiveness to alarms and in the absence of an alarm, a miniature version of the model was run with one agent of each learning strategy, one predator, and one alarm-calling heterospecific on a five-by-five grid. Each simulation was run for 150 steps with no opportunities for death or reproduction. Simulations were run with a range of learning rates (.001, .01, and .1), for each learning algorithm (neural network and Rescorla-Wagner).
 
-### Experiment 2
+### Design Concepts
 
-To determine the relative fitness of the different learning strategies under a range of conditions, the full model was run with a population of 1000 agents on a 100-by-100 square grid, using a learning rate of .01. The model was tested under all possible combinations of parameter values (listed in table below) to evaluate the effect of predator frequency, number of steps between predation attempts, baseline probability of successfully foraging, decrease in foraging success while attending to predators, probability of being caught by a predator while attentive, local reproduction, the learning algorithm used, and the presence of vigilance only agents.
+*Emergence: Which system-level phenomena truly emerge from individual traits, and which phenomena are merely imposed?*
 
-![](Writeup/Figures/Exp2Params.png)
+*Adaptation: What adaptive traits do the model individuals have which directly or indirectly can improve their potential fitness, in response to changes in themselves or their environment?*
+The only trait allowed to evolve is the agents’ learning strategy, which is passed on from parent to offspring with some probability of mutation.
 
-## Results and Discussion
+*Fitness: Is fitness-seeking modelled explicitly or implicitly? If explicitly, how do individuals calculate fitness (i.e., what is their fitness measure)?*
+Fitness is modeled implicitly based on a combination of foraging success and predator avoidance. All living agents have the opportunity to accumulate resources by foraging on each step with some probability of success based on whether or not they are also trying to avoid predators. After enough resources are accumulated an agent will attempt to reproduce, though they only succeed if the population size has not exceeded the environment’s carrying capacity. If agents die before the end of their natural lifespan, they lose all remaining opportunities to reproduce.
 
-As evidenced by the mathematical model, social learners should always be more attentive to predators, whether an alarm is present or not. This is consistent with the agent-based model when the learning rate is .01 for both the neural network and Rescorla-Wagner learning algorithms (see figure 1). That is, when learning is allowed to occur and reach a stable equilibrium, social learning always results in a stronger association between a cue, such as an alarm call, and a predator, because social learners have more opportunities for learning by attending to the responses of others.
+*Prediction: In estimating future consequences of their decisions, how do individuals predict the future conditions they will experience?*
+Agents learn from experience whether to focus on foraging or attempt to evade predators. Social and individual learners learn whether to attend to alarms as well as how often to be vigilant in the absence of an alarm based on whether or not predators are present under the two conditions. Social learners also learn from the responses of others - i.e. they are reinforced to flee when they see others fleeing and reinforced to forage when they see others foraging. Vigilance only agents ignore all alarm calls and just learn how often to be vigilant based on how often predators are present.
 
-However, just because social learners learn more efficiently does not mean social learning should necessarily be favored by natural selection. The mathematical model suggests that social learning should only be favored when alarms are highly accurate, the benefits of foraging are low, and the costs of predation are high. The mathematical results further suggest that the fitness of social learning sharply decreases as the number of social learners increases (see figure 2), because they are more likely to become overresponsive by responding to each other. This indicates that for social learners to become prevalent, the benefits of increased responsiveness must greatly outweigh the costs.
+*Sensing: What internal and environmental state variables are individuals assumed to sense or “know” and consider in their adaptive decisions?*
+Social and individual learners can detect alarm calls and use those to determine whether to be vigilant on a given step. Vigilance only agents do not detect alarms and just determine whether to be vigilant based on the accumulation of all of their previous experience.
 
-The costs and benefits of responding to predators were more explicitly modeled in the agent-based model. The agent-based model also compared the fitness of individual and social learning to a third strategy that did not attend to alarms at all, and merely learned how often to respond to predators based on their prevalence in the environment. Under most conditions, it was found that the third vigilance only strategy was the most successful. Learning to attend to alarms was only advantageous when the costs of missing foraging opportunities while attending to predators were low. That is, both the baseline probability of foraging successfully and the probability of foraging successfully while attending to predators had to be high. When attending to alarms was advantageous, social learning was generally favored (see figure 3) because of social learners’ increased responsiveness. Individual learning was not clearly favored over vigilance only and social learning, however the individual learning and vigilance only strategies were approximately equally advantageous when the decrease in foraging while respondsive was low (see figure 3) or predators were uncommon (see figure 4), in which case their responsiveness to alarms and in the absence of an alarm was the same (see figure 5). All three strategies were approximately equally advantageous when the cost of missed foraging opportunities was low and it was difficult for agents to evade predators even when attending to them (see figure 6).
+*Interaction: What kinds of interactions among individuals are assumed?*
+Social and Individual learners can attend to the alarm calls produced by heterospecifics. All agents learn from the presence of predators, and social learners can also observe the behavior of others and learn from them. Heterospecifics can detect predators and produce alarms calls. Predators can detect agents, which they pursue and kill.
 
-These results not only suggest when and how animals should learn to attend to alarm calls, but also when and how animals should learn to respond to all different kinds of signals of predation. This suggests that it is not predation risk, but the cost of missed foraging opportunities that should primarily determine when attending to signals of predation is advantageous. This result is in line with previous work which suggests that when predators are prevalent, it is not worth the missed foraging opportunities to attend to them (e.g. Lima & Bednekoff 1999; Trimmer et al. 2017). It is reasonable that other decreases in foraging success would likewise make attending to the presence of predators untenable. It is also worth noting that this effect is evident in a model where resources only determine whether animals can reproduce, and there is no risk of dying from insufficient resources. If that was added, the effect of foraging success would likely be even stronger. This result also suggests that in cases where missed foraging opportunities are less costly, such as if animals live in groups where resources are pooled, social learning will be more strongly favored. This could result in a positive feedback loop where group living selects for social learning, which makes group living even more essential.
+*Stochasticity: Is stochasticity part of the model? What are the reasons?*
+Almost all outcomes are determined stochastically based on set probabilities to account for the variability found in life. This includes agents’ foraging success, the likelihood of mutations in their offspring, predators’ success in catching an agent once they have landed on it, and agents’ behavior - whether they focus on foraging or attempt to evade predators.
+
+*Observation: How are data collected from the IBM for testing, understanding, and analyzing it?*
+Whenever an observed variable changes, it is updated for the simulaiton as a whole (see table for more details). The metrics for the simulation are then recorded at set intervals.
+
+| Variable         | Observation                                                             |
+|------------------|-------------------------------------------------------------------------|
+| Number of individuals (by strategy) | The count for each learning strategy is incremented when an agent with that strategy is born and decremented whenever an agent with that strategy dies. |
+| Response to alarm (by strategy) | If an agent detects an alarm, its previous probability of fleeing in the presence of an alarm is subtracted from the total for its learning strategy, and its new probability is added to the total. Before data is recorded, it is divided by the total number of individuals of that learning strategy that have been in the simulation so far to get an average. |
+| Response to the absence of an alarm (by strategy) | If an agent does not detect an alarm, its previous probability of foraging in the anbsence of an alarm is subtracted from the total for its learning strategy, and its new probability is added to the total. Before data is recorded, it is divided by the total number of individuals of that learning strategy that have been in the simulation so far to get an average. |
+| Cost of predation (by strategy) | If an agent dies from predation, the cost of predation for its learning strategy is incremented. Before data is recorded, it is divided by the total number of individuals of that learning strategy that have been in the simulation so far to get an average. |
+| Cost of not foraging (by strategy) | If an agent does not successfully forage, the cost of not foraging for its learning strategy is incremented. Before data is recorded, it is divided by the total number of individuals of that learning strategy that have been in the simulation so far to get an average. |
+| Reproductive success (by strategy) | If an agent successfully reproduces, the reproductive success for its learning strategy is incremented. Before data is recorded, it is divided by the total number of individuals of that learning strategy that have been in the simulation so far to get an average. |
+| Lifespan (by strategy) | When an agent dies, its age is added to the total lifespan for its learning strategy. Before data is recorded, it is divided by the total number of individuals of that learning strategy that have been in the simulation so far to get an average. |
+| Predation rate | If an agent dies from predation, the total predation rate is incremented. Before data is recorded, it is divided by the total number of steps so far to get an average. |
+| Reproduction rate | If an agent successfully reproduces, the total reproduction rate is incremented. Before data is recorded, it is divided by the total number of steps so far to get an average. |
+| False alarm rate | If an agent detects an alarm, but neither a predator nor a fleeing agent, the total false alarm rate is incremented. Before data is recorded, it is divided by the total number of steps so far to get an average. |
+
+
+### Details
+
+#### Initialization
+
+First, all of the test parameters were initialized according to an input file.
+
+| Parameter                                              | Initialization    |
+|--------------------------------------------------------|-------------------|
+| Total steps | 30000 |
+| Result recording interval | 150 steps |
+| Random seed | Integer from 1 to 10 (inclusive) |
+| Grid dimensions | 100 X 100 squares |
+| Predator frequency (relative to agents) | Value between 0 and 1 |
+| Steps between predation attempts | Integer from 1 to 30000 |
+| Heterospecific frequency (relative to agents) | .1 |
+| Probability that a heterospecific will give an alarm call if it detects a predator | 1 |
+| Probability that a heterospecific will give an alarm call if it does not detect a predator | 0 |
+| Moore distance at which agents can detect predators | 2 squares |
+| Moore distance at which agents can detect alarms | 4 squares |
+| Moore distance at which agents can detect other agents fleeing | 2 squares |
+| Moore distance at which predators can detect agents | 2 squares |
+| Moore distance at which heterospecifics can detect predators | 4 squares |
+| Maximum population size | 1000 agents |
+| Probability that an agent will flee independent of learning | .001 |
+| Whether there will be vigilance only agents in that simulation | True or False |
+| Initial proportion of vigilance only agents | Value between 0 and .334 |
+| Initial proportion of individual learning agents | Value from .333 to .5 |
+| Initial proportion of social learning agents | Value from .333 to .5 |
+| Mutation rate | .001 |
+| Whether agents have local reproduction | True or False |
+| Foraging success threshold for reproduction | 25 |
+| Probability of foraging successfully while not fleeing | Value between 0 and 1 |
+| Probability of successfully evading a predator while fleeing | Value between 0 and 1 |
+| How much lower the probability of foraging successfully is while fleeing | Value between 0 and 1 |
+| Mean lifespan | 125 steps |
+| Lifespan range | 50 steps |
+| Learning algorithm | Rescorla-Wagner or Neural Network |
+| Learning rate | .01 |
+
+When a new model was constructed, the observed variables were also all initialized to zero.
+
+Animals were then initialized according to the provided maximum population size, predator frequency, and heterospecific frequency.
+
+```
+FUNCTION INITIALIZE_ANIMALS:
+  FOR i = 1 to maximum population size:
+    IF i < maximum population size * initial proportion of vigilance only agents:
+      CREATE vigilance only Agent
+    ELSE IF i < maximum population size * (initial proportion of vigilance only agents + initial proportion of individual learning agents):
+      CREATE individual learning Agent
+    ELSE:
+      CREATE social learning Agent
+  END FOR
+  
+  FOR i = 1 to predator frequency * maximum population size:
+    CREATE: Predator
+  END FOR
+    
+  FOR i = 1 to heterospecific frequency * maximum population size:
+    CREATE: Heterospecific
+  END FOR
+  
+END INITIALIZE_ANIMALS
+
+```
+
+When a new Animal was created, its state variables were initialized.
+
+|                  Variable                |                 Initialization                |
+|------------------------------------------|-----------------------------------------------|
+| **All Animals** |
+| Location | x and y coordinates drawn from a uniform distribution over the length and width of the grid, or if agents have local reproduction, the same coordinates as their parent |
+| **Agent** |
+| Response to alarm | .5 |
+| Response to the absence of an alarm | .5 |
+| Accumulated resources | 0 |
+| Lifespan | Drawn from a normal distribution with standard deviation equal to the provided lifespan range, and mean equal to the provided mean lifespan. |
+| Age | 0 |
+| Neural network weights | Two arrays of values drawn from a normal distribution with standard deviation .1 and mean 0. |
+| Rescorla-Wagner stimulus strength | .5 (for both alarms and the absence of an alarm) |
+| Whether the agent is fleeing | False |
+| **Predator** |
+| Steps since last successful predation attempt | 0 |
+| **Heterospecific** |
+| Whether it is producing an alarm call | False |
+
+
+#### Input
+
+The model was run under a range of pre-set conditions described in the experiments and *Initialization* above, which did not change over the course of a simulation. The random number generator for each simulation was seeded with values from 0 to 10 for each replicate.
+
+
+#### Submodels
+
+**Aging:** Each step, each agent’s age is incremented by one. When an agent’s age exceeds its predetermined lifespan, the agent is considered dead and removed from the simulation.
+
+**Detection:** Agents can detect predators, alarm calling heterospecifics, and other agents. Predators can detect agents, and heterospecifics can detect predators. All of these processes use the same function, which takes in the class to search for (agent, predator, or heterospecific), and whether to specifically look for a signalling individual (such as a fleeing agent or an alarm calling heterospecific) or any individual, and returns the location of the nearest such individual, if one is present within the searching animal’s detection range.
+Using Mason’s getMooreNeighbors function, it iteratively checks all occupied squares within the searching animal’s detection range, and stores the nearest individual and its location. If specifically looking for signalling individuals, it only stores the nearest signalling individual. Each subsequent individual is compared to the nearest one, and, if closer, replaces it as the nearest, until all squares have been checked.
+
+```
+FUNCTION DETECT:
+  INITIALIZE nearest to empty
+  FOR n = each object in this Animal's detection range:
+    IF n is of the type being searched for:
+      IF this Animal isn't looking for a signalling Animal OR n is signalling:
+        IF nearest is empty OR the Euclidan distance to n < Euclidian distance to nearest:
+          SET nearest = n
+  END FOR
+  RETURN nearest
+END DETECT
+
+```
+
+**Moving:** Agents can move to flee from Predators and Predators can move to pursue Agents. The Animal's x and y coordinates are incremented or decremented by 1 in accordance with the sign of the provided distance on that axis. If the distance is 0, then the Animal moves randomly. If the Animal's x or y value exceeds the height or width of the grid, it moves in the oposite direction on that axis.
+
+```
+FUNCTION MOVE:
+  IF the provided distance = 0 on both axes:
+    Move one square in a random direction.
+  ELSE:
+    IF the provided x distance is positive:
+      Increment this Animal's x coordinate by 1
+    ELSE IF the provided x distance is negative:
+      Decrement this Animal's x coordinate by 1
+    IF the provided y distance is positive:
+      Increment this Animal's y coordinate by 1
+    ELSE IF the provided y distance is negative:
+      Decrement this Animal's y coordinate by 1
+    
+  IF this Animal's x coordinate < 0:
+    SET this Animal's x coordinate = 1
+  ELSE IF this Animal's x coordinate > 100:
+    SET this Animal's x coordinate = 99
+  IF this Animal's y coordinate < 0:
+    SET this Animal's y coordinate = 1
+  ELSE IF this Animal's y coordinate > 100:
+    SET this Animal's y coordinate = 99
+END MOVE
+
+```
+
+**Fleeing:** Agents calculate the probability of fleeing based on whether they detected an alarm calling heterospecific, using the learning algorithm set for that simulation (see *Neural Network* and *Rescorla-Wagner* below). The agent then decides whether to flee by drawing from a uniform distribution from 0 to 1. If the chosen calue is less than the calculated probability of fleeing, it decides to flee, and otherwise it decides not to flee. If an agent decides to flee, it attempts to evade predators by moving. If it detects a predator, it moves in the opposite direction away from the nearest predator. Otherwise, if it detects an alarm call, it moves away from the nearest alarm calling heterospecific. If it neither detects a predator nor an alarm calling heterospecific, it moves in the same direction as the nearest fleeing conspecific. Otherwise, if it detects none of these, the agent moves randomly.
+
+```
+FUNCTION FLEE:
+  IF this Agent is vigilance only:
+    Assume no alarm is present
+  ELSE:
+    DETECT alarm calling (signalling) Heterospecifics
+  
+  CALCULATE probability of fleeing using the learning algorithm
+  IF a draw from a uniform distribution from 0 to 1 < probability of fleeing:
+    INITIALIZE x and y distance = 0
+    IF this Agent DETECTs a Predator:
+      SET x distance = this Agent's x coordinate - the Predator's x coordinate
+      SET y distance = this Agent's y coordinate - the Predator's y coordinate
+    ELSE IF this Agent is not vigilance only AND DETECTs an alarm-calling Heterospecific:
+      SET x distance = this Agent's x coordinate - the Heterospecific's x coordinate
+      SET y distance = this Agent's y coordinate - the Heteropsecific's y coordinate
+    ELSE IF this Agent is a social learner AND DETECTs a fleeing Agent:
+      SET x and y distance = that Agent's direction of movement
+    MOVE according to distance
+END FLEE
+```
+
+*Neural network:* In simulations using the neural network learning algorithm, agents make decisions and learn using a simple two layer neural network. The input layer contains only one simulate neuron, representing the agent’s sensory apparatus, and the output layer contains two neurons, representing the agent’s decision. The activation of the first output neuron represents a decision not to flee and the activation of the second output neuron represents the decision to flee. The detection of an alarm is represented as an input of 1 to the network, and the absence of an alarm is represented as an input of -1. The activation of the output neurons is then calculated based on the input, the learned weights from the input neuron to the output neurons, and the learned biases of the output neurons.
+$$output_{i=0,1} = input*weight_i + bias_i$$
+The agent’s action is determined based on the relative activations of the output neurons, such that the probability of fleeing is:
+$$P(flee) = \frac{e^{output_1}}{e^{output_0} + e^{output_1}}.$$
+
+[INSERT FIGURE]
+
+```
+FUNCTION CALCULATE_NERUAL_NETWORK:
+  IF this Agent DETECTs an alarm-calling Heterospecific:
+    SET input = 1
+  ELSE
+    SET input = -1
+  
+  SET output 0 = input*weight 0 + bias 0
+  SET output 1 = input*weight 1 + bias 1
+  SET probability of fleeing = exp(output 1)/(exp(output 0) + exp(output 1))
+  
+  RETURN probability of fleeing
+END FUNCTION DECIDE_NEURAL_NETWORK
+```
+
+*Rescorla-Wagner:* In simulations using the Rescorla-Wagner learning algorithm, Agents decide whether to flee based on the learned association between an alarm or the absence of an alarm and fleeing, depending on whether or not the Agent detected an alarm. The strength of the association is used as the probability of fleeing.
+
+```
+FUNCTION CALCULATE_RESCORLA_WAGNER:
+  IF this Agent DETECTs an alarm-calling Heterospecific:
+    SET probability of fleeing = association strength of an alarm
+  ELSE
+    SET probability of fleeing = association strength of the absence of an alarm
+    
+  RETURN probability of fleeing
+END CALCULATE_RESCORLA_WAGNER
+```
+
+**Foraging:** Each step, all agents have the opportunity to forage. The probability of foraging successfully is based on whether the agent decided to flee. If the agent is fleeing it has one probability of foraging successfully, and if it is foraging, it has an equal or greater probability of foraging successfully. These success rates are set for each simulation If an agent forages successfully, it accumulates one unit of resource.
+
+```
+FUNCTION FORAGE:
+  IF this Agent is fleeing:
+    SET probability of foraging successfully = probability of foraging successfully while not fleeing - decrease in foraging success while fleeing
+  ELSE:
+    SET probability of foraging successfully = probability of foraging successfully while not fleeing
+  
+  IF a draw from a uniform distribution from 0 to 1 < probability of foraging successfully:
+    Increment the amount of resources accumulated by this Agent
+END FORAGE
+```
+
+**Reproduction:** When an agent has accumulated a set amount of resources, it attempts to reproduce. If the population is below the carrying capacity, it succeeds, creating an agent with the same genotype (learning strategy), with a set probability of mutating to another genotype. If agents have local reproduction, then the agent is placed at the same x and y coordinates as its parent, otherwise it is created at random x and y coordinates. 
+
+```
+FUNCTION REPRODUCE:
+  IF the amount of resources accumulated by this Agent > threshold for reproduction:
+    SET amount of resources accumulated by this Agent = 0
+    IF total number of Agents in the population < maximum population size:
+      IF a draw from a uniform distribution from 0 to 1 < mutation rate:
+        CREATE a new Agent of a different learning strategy from its parent (randomly chosen)
+      ELSE:
+        CREATE a new Agent of the same learning strategy as its parent
+        IF there is local reproduction:
+          SET the new Agent's x and y coordinates = this Agent's x and y coordinates
+        ELSE:
+          SET the new Agent's x and y coordinates = random x and y coordinates on the grid
+END REPRODUCE
+```
+
+**Learning:** Each step, all agents learn based on the current state of their surroundings. Vigilance only agents just detect predators and increase their probability of feeling if a predator is present, or otherwise decrease their probability of fleeing in accordance with the learning algorithm. Individual and social learning agents detect whether an alarm-calling heterospecific is present. If an agent detects an alarm call, it adjusts its likelihood of fleeing in the presence of an alarm, and if an agent does not detect an alarm call, it adjust its likelihood of fleeing in the absence of an alarm. Individual learning agents detect predators and increase their probability of fleeing if a predator is present and otherwise decrease their probability of fleeing, while social learning agents detect both predators and other fleeing agents, and increase their probability of fleeing if either is present, and otherwise decrease their probability of fleeing.
+
+```
+FUNCTION LEARN:
+  IF this Agent is vigilance only:
+    Assume no alarm is present
+  ELSE:
+    DETECT alarm calling (signalling) Heterospecifics
+  
+  IF this Agent DETECTs Predators OR this is a social learning Agent and DETECTs fleeing Agents:
+    REINFORCE fleeing using the learning algorithm for this simulation
+  ELSE:
+    REINFORCE not fleeing using the learning algorithm for this simulation
+END LEARN
+```
+
+*Neural network:* In simulations using the neural network learning algorithm, Agents learn by adjusting the weights and biases of the neural network. Reinforcement is converted into an array that represents the ideal behavior under the provided circumstances. If the Agent is reinforced to flee, the ideal behavior is represented as $(0, 1)$, which would result in a nearly one hundred percent change of fleeing, and if it is reinforced not to flee, the ideal behavior is represented as $(1, 0)$, which would result in a nearly zero percent chance of fleeing. The ideal response is then compared with the actual output of the network under the circumstances, to calculate the error.
+
+$$error_i = ideal_i - output_i$$
+The error is used to adjust the weights and biases to each output node in accordance with the backpropagation equation.
+
+$$\Delta weight_i = learning.rate * error_i * input$$
+$$\Delta bias_i = learning.rate * error_i$$
+
+```
+FUNCTION REINFORCE_NEURAL_NETWORK:
+  IF this Agent DETECTs an alarm-calling Heterospecific:
+    SET input = 1
+  ELSE:
+    SET input = -1
+  
+  IF this Agent is reinforced to flee:
+    SET ideal response = [0, 1]
+  ELSE:
+    SET ideal response = [1, 0]
+  
+  FOR i = 0,1:
+    SET error i = ideal response i - output i
+    SET weight i = weight i + learning rate * error i * input
+    SET bias i = bias i + learning rate * error
+  END FOR
+END REINFORCE_NEURAL_NETWORK
+```
+
+*Rescorla-Wagner:* In simulations using the Rescorla-Wagner learning algorithm, Agents learn by adjusting the strength of the association between the presence or absence of an alarm and not fleeing. If the agent is reinforced to flee, the association strength is increased, with a maximum of 1.
+$$\Delta association.strength = learning.rate*(1-association.strength)$$
+If the agent is reinforced not to flee, the association strength is decreased, with a minimum of 0.
+$$\Delta association.strength = -learning.rate*association.strength$$
+
+```
+FUNCTION REINFORCE_RESCORLA_WAGNER:
+  IF this Agent DETECTs an alarm-calling Heterospecific:
+    SET association strength = strength of association between the presence of an alarm and fleeing
+  ELSE:
+    SET association strength = strength of association between the absence of an alarm and fleeing
+  
+  IF this Agent is reinforced to flee:
+    SET association strength = MIN(assocation strength + learning rate * (1-association strength), 1)
+  ELSE:
+    SET association strength = MAX(association strength - learning rate * assocation strength, 0)
+END REINFORCE_RESCORLA_WAGNER
+```
+**Density check:** Each step, all predators and heterospecifics check to ensure that the ratio of their type (predators or heterospecifics) to agents is within one individual of the initial ratio. If there are too few individuals, a new individual is initialized at a random location, and if there are too many this individual is removed from the population.
+
+```
+FUNCTION CHECK_DENSITY:
+  SET ideal number of individuals of this type =  initial frequency of this type * number of Agents
+  IF number of individuals of this type > 1 AND number of individuals - 1 > ideal number of individuals:
+    REMOVE this Animal from the population
+  ELSE IF the number of individuals of this type/number of Agents < initial frequency of this type:
+    CREATE a new Animal of this type
+END CHECK_DENSITY
+```
+
+**Predation:** When a predator has gone a designated number of steps without successfully catching an agent, it will detect agents and if successful, it will move toward the nearest agent, and otherwise moves randomly. If a predator lands on the same space as an agent, it attempts to catch the agent. If it succeeds, the agent is removed from the population and the predator’s step counter is reset. Each predator can only catch one agent on each step.
+
+```
+FUNCTION PREDATION:
+  IF the number of steps this Predator has gone since hunting > set number of steps between attempts:
+    DETECT Agents
+    MOVE toward nearest Agent (or randomly, if none)
+    IF this Predator is at the same x and y coordinates as an Agent:
+      IF the Agent is not fleeing OR a draw from a uniform distribution from 0 to 1 < set probability of predation on fleeing Agents:
+        REMOVE the Agent
+        SET number of steps this Predator has gone since hunting = 0
+END PREDATION
+```
+
+**Alarm calling:** Each step, all heterospecifics attempt to detect predators. If successful, they signal that they are alarm calling.
+
+```
+FUNCTION ALARM_CALL:
+  IF this Heterospecific DETECTs a Predator:
+    SET Alarm-calling (signalling) = True
+END ALARM_CALL
+```

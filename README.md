@@ -1,4 +1,4 @@
-## Agent-Based Model (ODD)
+## Agent-Based Model of Learning about Conspecific Alarm Calls (ODD)
 
 ### Overview
 
@@ -227,8 +227,6 @@ END FLEE
 $$output_{i=0,1} = input*weight_i + bias_i$$
 The agent’s action is determined based on the relative activations of the output neurons, such that the probability of fleeing is:
 $$P(flee) = \frac{e^{output_1}}{e^{output_0} + e^{output_1}}.$$
-
-[INSERT FIGURE]
 
 ```
 FUNCTION CALCULATE_NERUAL_NETWORK:

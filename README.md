@@ -19,45 +19,6 @@ The habitat has a carrying capacity that limits the number of agents, predators,
 Time is modeled in discrete steps. On each step, all agents, predators, and heterospecifics execute their behaviors and update their state variables.
 
 
-### Design Concepts
-
-*Emergence: Which system-level phenomena truly emerge from individual traits, and which phenomena are merely imposed?*
-
-*Adaptation: What adaptive traits do the model individuals have which directly or indirectly can improve their potential fitness, in response to changes in themselves or their environment?*
-The only trait allowed to evolve is the agents’ learning strategy, which is passed on from parent to offspring with some probability of mutation.
-
-*Fitness: Is fitness-seeking modelled explicitly or implicitly? If explicitly, how do individuals calculate fitness (i.e., what is their fitness measure)?*
-Fitness is modeled implicitly based on a combination of foraging success and predator avoidance. All living agents have the opportunity to accumulate resources by foraging on each step with some probability of success based on whether or not they are also trying to avoid predators. After enough resources are accumulated an agent will attempt to reproduce, though they only succeed if the population size has not exceeded the environment’s carrying capacity. If agents die before the end of their natural lifespan, they lose all remaining opportunities to reproduce.
-
-*Prediction: In estimating future consequences of their decisions, how do individuals predict the future conditions they will experience?*
-Agents learn from experience whether to focus on foraging or attempt to evade predators. Social and individual learners learn whether to attend to alarms as well as how often to be vigilant in the absence of an alarm based on whether or not predators are present under the two conditions. Social learners also learn from the responses of others - i.e. they are reinforced to flee when they see others fleeing and reinforced to forage when they see others foraging. Vigilance only agents ignore all alarm calls and just learn how often to be vigilant based on how often predators are present.
-
-*Sensing: What internal and environmental state variables are individuals assumed to sense or “know” and consider in their adaptive decisions?*
-Social and individual learners can detect alarm calls and use those to determine whether to be vigilant on a given step. Vigilance only agents do not detect alarms and just determine whether to be vigilant based on the accumulation of all of their previous experience.
-
-*Interaction: What kinds of interactions among individuals are assumed?*
-Social and Individual learners can attend to the alarm calls produced by heterospecifics. All agents learn from the presence of predators, and social learners can also observe the behavior of others and learn from them. Heterospecifics can detect predators and produce alarms calls. Predators can detect agents, which they pursue and kill.
-
-*Stochasticity: Is stochasticity part of the model? What are the reasons?*
-Almost all outcomes are determined stochastically based on set probabilities to account for the variability found in life. This includes agents’ foraging success, the likelihood of mutations in their offspring, predators’ success in catching an agent once they have landed on it, and agents’ behavior - whether they focus on foraging or attempt to evade predators.
-
-*Observation: How are data collected from the IBM for testing, understanding, and analyzing it?*
-Whenever an observed variable changes, it is updated for the simulaiton as a whole (see table for more details). The metrics for the simulation are then recorded at set intervals.
-
-| Variable         | Observation                                                             |
-|------------------|-------------------------------------------------------------------------|
-| Number of individuals (by strategy) | The count for each learning strategy is incremented when an agent with that strategy is born and decremented whenever an agent with that strategy dies. |
-| Response to alarm (by strategy) | If an agent detects an alarm, its previous probability of fleeing in the presence of an alarm is subtracted from the total for its learning strategy, and its new probability is added to the total. Before data is recorded, it is divided by the total number of individuals of that learning strategy that have been in the simulation so far to get an average. |
-| Response to the absence of an alarm (by strategy) | If an agent does not detect an alarm, its previous probability of foraging in the anbsence of an alarm is subtracted from the total for its learning strategy, and its new probability is added to the total. Before data is recorded, it is divided by the total number of individuals of that learning strategy that have been in the simulation so far to get an average. |
-| Cost of predation (by strategy) | If an agent dies from predation, the cost of predation for its learning strategy is incremented. Before data is recorded, it is divided by the total number of individuals of that learning strategy that have been in the simulation so far to get an average. |
-| Cost of not foraging (by strategy) | If an agent does not successfully forage, the cost of not foraging for its learning strategy is incremented. Before data is recorded, it is divided by the total number of individuals of that learning strategy that have been in the simulation so far to get an average. |
-| Reproductive success (by strategy) | If an agent successfully reproduces, the reproductive success for its learning strategy is incremented. Before data is recorded, it is divided by the total number of individuals of that learning strategy that have been in the simulation so far to get an average. |
-| Lifespan (by strategy) | When an agent dies, its age is added to the total lifespan for its learning strategy. Before data is recorded, it is divided by the total number of individuals of that learning strategy that have been in the simulation so far to get an average. |
-| Predation rate | If an agent dies from predation, the total predation rate is incremented. Before data is recorded, it is divided by the total number of steps so far to get an average. |
-| Reproduction rate | If an agent successfully reproduces, the total reproduction rate is incremented. Before data is recorded, it is divided by the total number of steps so far to get an average. |
-| False alarm rate | If an agent detects an alarm, but neither a predator nor a fleeing agent, the total false alarm rate is incremented. Before data is recorded, it is divided by the total number of steps so far to get an average. |
-
-
 ### Details
 
 #### Initialization
@@ -145,10 +106,20 @@ When a new Animal was created, its state variables were initialized.
 | Whether it is producing an alarm call | False |
 
 
-#### Input
+#### Data Collection
 
-The model was run under a range of pre-set conditions described in the experiments and *Initialization* above, which did not change over the course of a simulation. The random number generator for each simulation was seeded with values from 0 to 10 for each replicate.
-
+| Variable         | Observation                                                             |
+|------------------|-------------------------------------------------------------------------|
+| Number of individuals (by strategy) | The count for each learning strategy is incremented when an agent with that strategy is born and decremented whenever an agent with that strategy dies. |
+| Response to alarm (by strategy) | If an agent detects an alarm, its previous probability of fleeing in the presence of an alarm is subtracted from the total for its learning strategy, and its new probability is added to the total. Before data is recorded, it is divided by the total number of individuals of that learning strategy that have been in the simulation so far to get an average. |
+| Response to the absence of an alarm (by strategy) | If an agent does not detect an alarm, its previous probability of foraging in the anbsence of an alarm is subtracted from the total for its learning strategy, and its new probability is added to the total. Before data is recorded, it is divided by the total number of individuals of that learning strategy that have been in the simulation so far to get an average. |
+| Cost of predation (by strategy) | If an agent dies from predation, the cost of predation for its learning strategy is incremented. Before data is recorded, it is divided by the total number of individuals of that learning strategy that have been in the simulation so far to get an average. |
+| Cost of not foraging (by strategy) | If an agent does not successfully forage, the cost of not foraging for its learning strategy is incremented. Before data is recorded, it is divided by the total number of individuals of that learning strategy that have been in the simulation so far to get an average. |
+| Reproductive success (by strategy) | If an agent successfully reproduces, the reproductive success for its learning strategy is incremented. Before data is recorded, it is divided by the total number of individuals of that learning strategy that have been in the simulation so far to get an average. |
+| Lifespan (by strategy) | When an agent dies, its age is added to the total lifespan for its learning strategy. Before data is recorded, it is divided by the total number of individuals of that learning strategy that have been in the simulation so far to get an average. |
+| Predation rate | If an agent dies from predation, the total predation rate is incremented. Before data is recorded, it is divided by the total number of steps so far to get an average. |
+| Reproduction rate | If an agent successfully reproduces, the total reproduction rate is incremented. Before data is recorded, it is divided by the total number of steps so far to get an average. |
+| False alarm rate | If an agent detects an alarm, but neither a predator nor a fleeing agent, the total false alarm rate is incremented. Before data is recorded, it is divided by the total number of steps so far to get an average. |
 
 #### Submodels
 

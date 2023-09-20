@@ -1,11 +1,10 @@
-## Agent-Based Model of Learning to Recognize Alarm Calls (ODD)
+## When Does it Pay to Eavesdrop?
 
-### Overview
+Lots of animals learn to listen to the alarm calls of other species; if a little bird is afraid, maybe a squirrel should be too. However, predators are actually relatively rare in nature, so there aren't that many opportunities to learn which alarm calls are useful and which aren't, especially if any encounter with a predator could be an animal's last.
 
-#### Purpose
+We hypothesize that it might pay to not only learn from one's own experience, but also to pay attention to others' responses to alarm calls, so you learn to do whatever other members of your species do. This may seem like an obvious solution, but your peers also aren't always right, and too many false alarms can waste a lot of precious time. This model explores when it's worth risking listening to the bird who cried wolf and when it isn't. 
 
-This model aims to investigate under what ecological conditions social learning should be favored by natural selection over individual learning in the context of heterospecific alarm call recognition. Based on mathematical analyses (discussed above), social learning should always result in increased responsiveness to alarms, decreasing the consumptive costs of predation, but increasing the non-consumptive costs of missed foraging opportunities. This model directly compares the very different costs imposed by predation and missed foraging opportunities.
-
+### Complete model description
 
 #### State Variables and Scales
 
@@ -17,9 +16,6 @@ The habitat has a carrying capacity that limits the number of agents, predators,
 #### Process Overview and Scheduling
 
 Time is modeled in discrete steps. On each step, all agents, predators, and heterospecifics execute their behaviors and update their state variables.
-
-
-### Details
 
 #### Initialization
 
